@@ -1,0 +1,24 @@
+﻿@model List<StudentApp.StudenteViewModel>
+
+    @{
+    ViewData["Title"] = "Home Page";
+    }
+
+    <h2>Lista Studenti</h2>
+    <button id="aggiornaStudenti">Aggiorna Lista</button>
+    <div id="listaStudenti">
+        @await Html.PartialAsync("_ListaStudenti", Model)
+    </div>
+
+    <script>
+    $(document).ready(function () {
+            $("#aggiornaStudenti").click(function () {
+                $.ajax({
+                    url: '/Studente/ListaStudenti',
+                    type: 'GET',
+                    success: function (data) {
+                        $("#listaStudenti").html(data);
+                    }
+                });
+            });
+        });</script>
