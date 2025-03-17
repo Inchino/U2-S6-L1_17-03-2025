@@ -1,0 +1,10 @@
+﻿ @model StudentApp.StudenteViewModel
+
+@{
+    ViewData["Title"] = "Dettaglio Studente";
+}
+
+<h3>Dettagli Studente</h3>
+<p><strong>Nome:</strong> @Model.NomeCompleto</p>
+<p><strong>Data di Nascita:</strong> @Model.DataDiNascitaFormattata</p>
+<p><strong>Email:</strong> @Model.Email</p>

@@ -1,8 +1,8 @@
-﻿@{
+﻿ @model List<StudentApp.StudenteViewModel>
+
+@{
     ViewData["Title"] = "Lista Studenti";
 }
-
- @model List<StudentApp.StudenteViewModel>
 
 <table>
     <thead>
@@ -10,6 +10,7 @@
             <th>Nome Completo</th>
             <th>Data di Nascita</th>
             <th>Email</th>
+            <th>Azioni</th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
                 <td>@studente.NomeCompleto</td>
                 <td>@studente.DataDiNascitaFormattata</td>
                 <td>@studente.Email</td>
+                <td><button class="dettaglioStudente" data-id="@studente.Id">Dettaglio</button></td>
             </tr>
         }
     </tbody>

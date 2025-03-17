@@ -26,6 +26,18 @@ namespace S6_L1
                 Email = s.Email
             }).ToListAsync();
         }
+
+        public async Task<StudenteViewModel> GetStudenteByIdAsync(int id)
+        {
+            return await _context.Studenti.Where(s => s.Id == id)
+                .Select(s => new StudenteViewModel
+                {
+                    Id = s.Id,
+                    NomeCompleto = s.Nome + " " + s.Cognome,
+                    DataDiNascitaFormattata = s.DataDiNascita.ToString("dd/MM/yyyy"),
+                    Email = s.Email
+                }).FirstOrDefaultAsync();
+        }
     }
 
 }
