@@ -1,42 +1,111 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using S6_L1.Services;
+using S6_L1.ViewModels;
 using System.Threading.Tasks;
-using S6_L1;
 
-namespace S6_L1
+namespace S6_L1.Controllers
 {
     public class StudenteController : Controller
-{
-    private readonly StudenteService _studenteService;
-
-    public StudenteController(StudenteService studenteService)
     {
-        _studenteService = studenteService;
-    }
+        private readonly StudenteService _studenteService;
+        private readonly LoggerService _loggerService;
 
-    public async Task<IActionResult> Index()
-    {
-        var studenti = await _studenteService.GetStudentiAsync();
-        return View(studenti);
-    }
-
-    public async Task<IActionResult> ListaStudenti()
-    {
-        var studenti = await _studenteService.GetStudentiAsync();
-        return PartialView("_ListaStudenti", studenti);
-    }
-
-    public async Task<IActionResult> Dettaglio(int id)
-    {
-        var studente = await _studenteService.GetStudenteByIdAsync(id);
-        if (studente == null)
+        public StudenteController(StudenteService studenteService, LoggerService loggerService)
         {
-            return NotFound();
+            this._studenteService = studenteService;
+            this._loggerService = loggerService;
         }
-        return PartialView("_DettaglioStudente", studente);
+
+        public IActionResult Index()
+        {
+            return View(); //1
+        }
+
+        [HttpGet("studente/get-all")]
+        public async Task<IActionResult> ListaStudenti()
+        {
+            var studentiList = await _studenteService.GetAllStudentiAsync();
+            return PartialView("_StudenteList", studentiList); //2
+        }
+
+        public IActionResult Crea()
+        {
+            return PartialView("_AddForm"); //3
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Crea(StudenteCreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Errore durante il salvataggio" });
+            }
+
+            var result = await _studenteService.AddStudenteAsync(model);
+            if (!result)
+            {
+                return Json(new { success = false, message = "Errore durante il salvataggio" });
+            }
+
+            _loggerService.LogInformation("Studente aggiunto con successo");
+            return Json(new { success = true, message = "Studente aggiunto con successo" });
+        }
+
+        [HttpGet("studente/dettaglio/{id:int}")]
+        public async Task<IActionResult> Dettaglio(int id)
+        {
+            var studente = await _studenteService.GetStudenteDetailByIdAsync(id);
+            if (studente == null)
+            {
+                return Json(new { success = false, message = "Nessuno studente trovato" });
+            }
+            return Json(new { success = true, data = studente });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Elimina(int id)
+        {
+            var result = await _studenteService.DeleteStudenteByIdAsync(id);
+            if (!result)
+            {
+                return Json(new { success = false, message = "Errore durante l'eliminazione" });
+            }
+
+            _loggerService.LogInformation("Studente eliminato con successo");
+            return Json(new { success = true, message = "Studente eliminato con successo" });
+        }
+
+        public async Task<IActionResult> Modifica(int id)
+        {
+            var studente = await _studenteService.GetStudenteDetailByIdAsync(id);
+            if (studente == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var editModel = new StudenteEditViewModel()
+            {
+                Id = studente.Id,
+                Nome = studente.NomeCompleto.Split(' ')[0],
+                Cognome = studente.NomeCompleto.Split(' ')[1],
+                DataDiNascita = DateTime.Parse(studente.DataDiNascitaFormattata),
+                Email = studente.Email
+            };
+
+            return PartialView("_EditForm", editModel); //4
+        }
+
+        [HttpPost("studente/modifica/salva")]
+        public async Task<IActionResult> Modifica(StudenteEditViewModel model)
+        {
+            var result = await _studenteService.UpdateStudenteAsync(model);
+            if (!result)
+            {
+                return Json(new { success = false, message = "Errore durante l'aggiornamento" });
+            }
+
+            _loggerService.LogInformation("Studente aggiornato con successo");
+            return Json(new { success = true, message = "Studente aggiornato con successo" });
+        }
     }
-}
 }

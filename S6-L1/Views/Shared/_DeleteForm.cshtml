@@ -1,0 +1,9 @@
+﻿@model StudenteEditViewModel
+
+<div class="modal-body">
+    <p>Sei sicuro di voler eliminare <strong>@Model.Nome @Model.Cognome</strong>?</p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" onclick="deleteStudent(@Model.Id)">Elimina</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+</div>

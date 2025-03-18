@@ -1,15 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using S6_L1.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
-namespace S6_L1
+namespace S6_L1.Data
 {
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Studente> Studenti { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Studente>().Property(p => p.CreatedAt).HasDefaultValueSql("GETDATE()").IsRequired(true);
+        }
     }
 }

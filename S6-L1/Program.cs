@@ -1,13 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using S6_L1.Data;
+using S6_L1.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<StudenteService>();
+builder.Services.AddScoped<LoggerService>();
+
+LoggerService.ConfigureLogger();
 
 var app = builder.Build();
 
