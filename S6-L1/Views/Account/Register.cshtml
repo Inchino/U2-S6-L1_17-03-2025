@@ -1,11 +1,47 @@
-﻿@model RegisterViewModel
+﻿@model S6_L1.ViewModels.RegisterViewModel
+
+<h2>Registrazione</h2>
 
 <form method="post" asp-controller="Account" asp-action="Register">
-    <input placeholder="First Name" asp-for="FirstName" />
-    <input placeholder="Last Name" asp-for="LastName" />
-    <input type="email" placeholder="Email" asp-for="EmailAddress" />
-    <input type="datetime" asp-for="BirthDate" />
-    <input type="password" placeholder="Password" asp-for="Password" />
-    <input type="password" placeholder="Confirm Password" asp-for="ConfirmPassword" />
-    <button>Register</button>
+    <div>
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" placeholder="Nome" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" placeholder="Cognome" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="EmailAddress"></label>
+        <input asp-for="EmailAddress" type="email" placeholder="Email" />
+        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="BirthDate"></label>
+        <input asp-for="BirthDate" type="date" />
+        <span asp-validation-for="BirthDate" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" placeholder="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" type="password" placeholder="Conferma Password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <button type="submit">Registrati</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

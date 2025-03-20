@@ -1,0 +1,47 @@
+﻿@model S6_L1.ViewModels.LoginViewModel
+
+<h2>Accedi</h2>
+
+<form method="post" asp-controller="Account" asp-action="Login">
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" type="email" placeholder="Inserisci la tua email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password"></label>
+        <div style="position: relative;">
+            <input asp-for="Password" type="password" placeholder="Inserisci la password" id="passwordField" />
+            <button type="button" id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                👁️
+            </button>
+        </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div>
+        <input asp-for="RememberMe" type="checkbox" />
+        <label asp-for="RememberMe">Ricordami</label>
+    </div>
+
+    <button type="submit">Accedi</button>
+
+    <p>Non hai un account? <a asp-controller="Account" asp-action="Register">Registrati</a></p>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("togglePassword").addEventListener("click", function() {
+            var passwordField = document.getElementById("passwordField");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.textContent = "🔒";
+            } else {
+                passwordField.type = "password";
+                this.textContent = "👁️";
+            }
+        });
+    </script>
+}

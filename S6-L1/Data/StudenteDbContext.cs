@@ -13,7 +13,16 @@ namespace S6_L1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Studente>().Property(p => p.CreatedAt).HasDefaultValueSql("GETDATE()").IsRequired(true);
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
+            modelBuilder.Entity<IdentityUserRole<string>>().HasKey(r => new { r.UserId, r.RoleId });
+            modelBuilder.Entity<IdentityUserToken<string>>().HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
+
+            modelBuilder.Entity<Studente>()
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .IsRequired(true);
         }
     }
 }
