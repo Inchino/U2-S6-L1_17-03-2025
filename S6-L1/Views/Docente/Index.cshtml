@@ -2,6 +2,13 @@
     ViewData["Title"] = "Area Docenti";
 }
 
-<h2>Benvenuto nell'Area Riservata ai Docenti</h2>
-
-<p>Questa sezione è accessibile solo agli utenti con il ruolo di "Docente".</p>
+@if (User.IsInRole("Docente"))
+{
+    <h2>Benvenuto nell'Area Riservata ai Docenti</h2>
+    <p>Questa sezione è accessibile solo agli utenti con il ruolo di "Docente".</p>
+}
+else
+{
+    <h2>Accesso Negato</h2>
+    <p>Non hai i permessi per accedere a questa pagina.</p>
+}

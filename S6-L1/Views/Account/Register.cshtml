@@ -39,6 +39,17 @@
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
 
+    @if (User.IsInRole("Admin")) // ✅ Solo gli admin possono scegliere il ruolo
+    {
+        <div>
+            <label asp-for="Role"></label>
+            <select asp-for="Role">
+                <option value="Studente">Studente</option>
+                <option value="Docente">Docente</option>
+            </select>
+        </div>
+    }
+
     <button type="submit">Registrati</button>
 </form>
 

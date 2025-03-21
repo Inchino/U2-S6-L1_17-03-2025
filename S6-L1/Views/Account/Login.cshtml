@@ -33,15 +33,23 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        document.getElementById("togglePassword").addEventListener("click", function() {
+        document.addEventListener("DOMContentLoaded", function() {
             var passwordField = document.getElementById("passwordField");
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                this.textContent = "🔒";
-            } else {
-                passwordField.type = "password";
-                this.textContent = "👁️";
+            var toggleButton = document.getElementById("togglePassword");
+
+            if (passwordField && toggleButton) {
+                toggleButton.addEventListener("click", function() {
+                    if (passwordField.type === "password") {
+                        passwordField.type = "text";
+                        this.textContent = "Nascondi";
+                    } else {
+                        passwordField.type = "password";
+                        this.textContent = "Visualizza";
+                    }
+                });
             }
         });
     </script>
+}
+
 }

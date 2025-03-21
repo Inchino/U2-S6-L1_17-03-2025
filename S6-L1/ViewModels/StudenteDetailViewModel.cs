@@ -5,9 +5,10 @@
         public int Id { get; set; }
         public string NomeCompleto { get; set; }
 
-        public DateTime DataDiNascita { get; set; }
+        public DateTime? DataDiNascita { get; set; }
 
-        public string DataDiNascitaFormattata => DataDiNascita.ToString("dd/MM/yyyy");
+        public string DataDiNascitaFormattata => DataDiNascita.HasValue ? DataDiNascita.Value.ToString("dd/MM/yyyy") : "N/A";
+
         public string Email { get; set; }
     }
 }

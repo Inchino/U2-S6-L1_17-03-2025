@@ -25,8 +25,8 @@ namespace S6_L1.Services
         {
             try
             {
-                var rowsAffected = await _context.SaveChangesAsync();
-                return rowsAffected > 0;
+                await _context.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
@@ -34,6 +34,7 @@ namespace S6_L1.Services
                 return false;
             }
         }
+
 
         public async Task<StudenteListViewModel> GetAllStudentiAsync()
         {
@@ -83,14 +84,17 @@ namespace S6_L1.Services
         {
             try
             {
-                return await _context.Studenti.Where(s => s.Id == id)
-                    .Select(s => new StudenteDetailViewModel
-                    {
-                        Id = s.Id,
-                        NomeCompleto = s.Nome + " " + s.Cognome,
-                        DataDiNascitaFormattata = s.DataDiNascita.ToString("dd/MM/yyyy"),
-                        Email = s.Email
-                    }).FirstOrDefaultAsync();
+                return await _context.Studenti
+                     .Where(s => s.Id == id)
+                     .Select(s => new StudenteDetailViewModel
+                     {
+                         Id = s.Id,
+                         NomeCompleto = s.Nome + " " + s.Cognome,
+                         DataDiNascita = s.DataDiNascita,
+                         Email = s.Email
+    })
+    .FirstOrDefaultAsync();
+
             }
             catch (Exception ex)
             {
