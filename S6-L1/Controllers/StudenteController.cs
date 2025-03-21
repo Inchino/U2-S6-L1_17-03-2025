@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using S6_L1.Services;
 using S6_L1.ViewModels;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace S6_L1.Controllers
             return View(); //1
         }
 
+        [Authorize]
         [HttpGet("studente/get-all")]
         public async Task<IActionResult> ListaStudenti()
         {
@@ -51,6 +53,7 @@ namespace S6_L1.Controllers
             return Json(new { success = true, message = "Studente aggiunto con successo" });
         }
 
+        [Authorize]
         [HttpGet("studente/dettaglio/{id:int}")]
         public async Task<IActionResult> Dettaglio(int id)
         {
@@ -62,6 +65,7 @@ namespace S6_L1.Controllers
             return Json(new { success = true, data = studente });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Elimina(int id)
         {

@@ -3,6 +3,7 @@ using S6_L1.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace S6_L1.Controllers
 {
@@ -36,17 +37,18 @@ namespace S6_L1.Controllers
                 LastName = registerViewModel.LastName,
                 Email = registerViewModel.EmailAddress,
                 UserName = registerViewModel.EmailAddress,
-                BirthDate = registerViewModel.BirthDate
+                BirthDate = registerViewModel.BirthDate.HasValue ? DateOnly.FromDateTime(registerViewModel.BirthDate.Value) : DateOnly.FromDateTime(DateTime.UtcNow)
+
             };
 
             var result = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(newUser, "Studente");
+                var roleToAssign = (registerViewModel.Role == "Docente" && User.IsInRole("Admin")) ? "Docente" : "Studente";
+                await _userManager.AddToRoleAsync(newUser, roleToAssign);
 
                 await _signInManager.SignInAsync(newUser, isPersistent: false);
-
                 return RedirectToAction("Index", "Home");
             }
 
@@ -55,6 +57,7 @@ namespace S6_L1.Controllers
 
             return View(registerViewModel);
         }
+
 
         public IActionResult Login()
         {
@@ -80,10 +83,12 @@ namespace S6_L1.Controllers
             return View(loginViewModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
     }
 }

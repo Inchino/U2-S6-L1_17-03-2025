@@ -151,6 +151,20 @@ namespace S6_L1.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b658f638-9fe2-4819-aaf8-88699233df25",
+                            Name = "Studente",
+                            NormalizedName = "STUDENTE"
+                        },
+                        new
+                        {
+                            Id = "e4e570a7-8db0-4d85-ab9a-d796f6274ab5",
+                            Name = "Docente",
+                            NormalizedName = "DOCENTE"
+                        });
                 });
 
             modelBuilder.Entity("S6_L1.Models.AppUser", b =>
